@@ -19,6 +19,7 @@ class SharesData:
         self.shares_five = 0
         self.shares_two = 0
         self.max = 0
+       
     def __str__(self) -> str:
         return str(self.__class__) + ":" + str(self.__dict__)
     #Setter
@@ -36,6 +37,7 @@ class SharesData:
             self.shares_two = round(TWO_DROP/self.price)
         else:
             pass
+
     #Get Values as a list
     def get_as_list(self)->list:
         output = []
@@ -57,7 +59,6 @@ def read_from_csv(file_name: str) -> list:
         next(csv_iter)
         mylist = []
         for [date , price] in csv_iter:
-            price = float(price)
             element = SharesData(date, float(price))
             mylist.append(element)
     return mylist
