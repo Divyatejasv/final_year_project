@@ -18,10 +18,14 @@ class SharesData:
         self.shares_ten = 0
         self.shares_five = 0
         self.shares_two = 0
+        self.max = 0
     def __str__(self) -> str:
         return str(self.__class__) + ":" + str(self.__dict__)
     #Setter
+    def set_max(self, max: float)->None:
+        self.max = max
     def set_shares(self, max: float)->None:
+        self.set_max(max)
         if self.price < 0.85*max:
             self.shares_fifteen = round(FIFTEEN_DROP/self.price)
         elif self.price < 0.9*max:
@@ -37,6 +41,7 @@ class SharesData:
         output = []
         output.append(self.date)
         output.append(self.price)
+        output.append(self.max)
         output.append(self.shares_fifteen)
         output.append(self.shares_ten)
         output.append(self.shares_five)
@@ -61,7 +66,7 @@ def read_from_csv(file_name: str) -> list:
 def write_to_csv(file_name: str, share_datas: list):
     with open(file_name, 'w+', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(["Date", "Price", "15% drop", "10% drop", "5% drop", "2% drop"])
+        writer.writerow(["Date", "Price", "max" ,"15% drop", "10% drop", "5% drop", "2% drop"])
         for share in share_datas:
             writer.writerow(share.get_as_list())
 
@@ -71,6 +76,7 @@ def share_calc(share_datas: list)-> list:
     for share in share_datas:
         if share.price > max:
             max = share.price
+            share.set_max(max)
         else:
             share.set_shares(max)
     return share_datas
